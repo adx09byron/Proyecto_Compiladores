@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class EstadisticasPrograma {
+public class Proyecto {
     
     // Número Entero
     public static boolean esEntero(String str) {
