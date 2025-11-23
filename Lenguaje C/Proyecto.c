@@ -120,7 +120,10 @@ int main() {
         strcpy(lineaCopia, linea);
         
         // Delimitadores: espacios, tabs, newlines, y caracteres especiales
-        token = strtok(lineaCopia, " \t\n\r(){}[];,<>=+-*/%&|!~^.\":\'#");
+            // Definimos la cadena una vez (sin el punto '.') para preservar
+            // los numeros flotantes como un solo token (ej. 3.14)
+            const char delimitadores[] = " \t\n\r(){}[];,<>=+-*/%&|!~^\":\'#";
+            token = strtok(lineaCopia, delimitadores);
         
         while (token != NULL) {
             // Verificar si es un flotante
@@ -139,7 +142,7 @@ int main() {
                 totalCaracteresPalabras += longitud;
             }
             
-            token = strtok(NULL, " \t\n\r(){}[];,<>=+-*/%&|!~^.\":\'#");
+                token = strtok(NULL, delimitadores);
         }
     }
     
