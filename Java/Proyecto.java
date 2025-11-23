@@ -34,42 +34,30 @@ public class Proyecto {
     
     // Número Flotante
     public static boolean esFlotante(String str) {
-        int i = 0;
-        boolean tienePunto = false;
-        int digitosDespuesPunto = 0;
-        
-        // Cadena vacía
-        if (str.isEmpty()) {
+        // Refiérase a formatos que contienen punto o notación científica.
+        // Para distinguir enteros de flotantes comprobamos si la cadena
+        // contiene '.' o 'e'/'E'. Si no contiene ninguno, no es flotante.
+        if (str == null || str.isEmpty()) return false;
+
+        int start = 0;
+        if (str.charAt(0) == '+' || str.charAt(0) == '-') start = 1;
+        if (start >= str.length()) return false;
+
+        boolean tieneIndicador = false;
+        for (int i = start; i < str.length(); i++) {
+            char c = str.charAt(i);
+            if (c == '.' || c == 'e' || c == 'E') { tieneIndicador = true; break; }
+        }
+
+        if (!tieneIndicador) return false; // no contiene punto ni exponencial
+
+        // Intentar parsear con Double.parseDouble para validar formatos válidos
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException ex) {
             return false;
         }
-        
-        // Signo negativo o positivo
-        if (str.charAt(0) == '-' || str.charAt(0) == '+') {
-            i = 1;
-        }
-        
-        if (i >= str.length()) {
-            return false; // Solo tiene el signo
-        }
-        
-        // Formato flotante
-        while (i < str.length()) {
-            if (str.charAt(i) == '.') {
-                if (tienePunto) {
-                    return false; // Más de un punto
-                }
-                tienePunto = true;
-            } else if (!Character.isDigit(str.charAt(i))) {
-                return false;
-            } else if (tienePunto) {
-                // Contar dígitos después del punto
-                digitosDespuesPunto++;
-            }
-            i++;
-        }
-        
-        // Debe tener punto Y al menos un dígito después del punto
-        return (tienePunto && digitosDespuesPunto > 0);
     }
     
     // Función para tokenizar manualmente sin regex
@@ -78,7 +66,7 @@ public class Proyecto {
         StringBuilder tokenActual = new StringBuilder();
         
         // Definir delimitadores
-        String delimitadores = " \t\n\r(){}[];,<>=+-*/%&|!~^.\":\'#";
+        String delimitadores = " \t\n\r(){}[];,<>=+-*/%&|!~^\":\'#";
         
         for (int i = 0; i < linea.length(); i++) {
             char c = linea.charAt(i);
