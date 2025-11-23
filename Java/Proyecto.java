@@ -183,7 +183,7 @@ public class Proyecto {
             archivo.close();
             
         } catch (FileNotFoundException e) {
-            System.out.println("Error: No se pudo abrir el archivo Script1.java");
+            System.out.println("Error: No se pudo abrir el archivo Script1.c");
             System.out.println("Asegurate de que el archivo existe en el mismo directorio.");
         } catch (IOException e) {
             System.out.println("Error al leer el archivo: " + e.getMessage());
