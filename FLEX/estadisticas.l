@@ -6,7 +6,17 @@ int total_enteros = 0;
 int total_longitud_palabras = 0;
 %}
 
+%x COMMENT
+
 %%
+
+"//".*                  ;   /* Ignorar comentarios de una línea */
+
+"/*"                    { BEGIN(COMMENT); }  /* Inicio de comentario multilínea */
+<COMMENT>"*/"           { BEGIN(INITIAL); }  /* Fin de comentario multilínea */
+<COMMENT>\n             ;   /* Ignorar saltos de línea dentro de comentarios */
+<COMMENT>.              ;   /* Ignorar cualquier carácter dentro de comentarios */
+
 \n                      { total_lineas++; }
 [0-9]+                  { total_enteros++; }
 [a-zA-Z_][a-zA-Z0-9_]*  { 
@@ -14,6 +24,7 @@ int total_longitud_palabras = 0;
                             total_longitud_palabras += yyleng;
                         }
 .                       ;   /* Ignorar otros caracteres */
+
 %%
 
 int yywrap() {
